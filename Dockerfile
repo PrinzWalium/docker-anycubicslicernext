@@ -40,7 +40,9 @@ RUN \
     libwebkit2gtk-4.1-0 \
     libwx-perl && \
   echo "**** Install Anycubic slicer latest ****" && \
-  /bin/bash -c "$(curl -fsSL https://cdn-universe-slicer.anycubic.com/install/AnycubicSlicerNextInstaller.sh)" && \
+  curl -fsSL -o /tmp/anycubic.sh https://cdn-universe-slicer.anycubic.com/install/AnycubicSlicerNextInstaller.sh && \
+  bash /tmp/anycubic.sh && \
+  rm /tmp/anycubic.sh && \
   printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
   echo "**** cleanup ****" && \
   apt-get autoclean && \
@@ -50,6 +52,7 @@ RUN \
     /var/lib/apt/lists/* \
     /var/tmp/* \
     /tmp/*
+
 
 # add local files
 COPY /root /
