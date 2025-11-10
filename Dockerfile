@@ -19,6 +19,8 @@ RUN \
     /usr/share/selkies/www/icon.png \
     https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/orcaslicer-logo.png && \
   echo "**** install packages ****" && \
+  # add-apt-repository ppa:xtradeb/apps && \
+  apt-get update && apt-get install -y software-properties-common && \
   add-apt-repository ppa:xtradeb/apps && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive \
@@ -41,9 +43,10 @@ RUN \
     libwx-perl && \
   echo "**** Install Anycubic slicer latest ****" && \
   curl -fsSL -o /tmp/anycubic.sh https://cdn-universe-slicer.anycubic.com/install/AnycubicSlicerNextInstaller.sh && \
-  bash /tmp/anycubic.sh && \
+  #bash /tmp/anycubic.sh && \
+  bash -x /tmp/anycubic.sh || (echo "Anycubic installer failed" && cat /tmp/anycubic.sh && exit 1) && \
   rm /tmp/anycubic.sh && \
-  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
+  printf "Linuxserver.io version: ${VERSION-unknown}\nBuild-date: ${BUILD_DATE-unknown}" > /build_version && \
   echo "**** cleanup ****" && \
   apt-get autoclean && \
   rm -rf \
