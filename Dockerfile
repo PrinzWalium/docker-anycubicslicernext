@@ -41,11 +41,14 @@ RUN \
     libgstreamer-plugins-bad1.0 \
     libwebkit2gtk-4.1-0 \
     libwx-perl && \
-  echo "**** Install Anycubic slicer latest ****" && \
-  curl -fsSL -o /tmp/anycubic.sh https://cdn-universe-slicer.anycubic.com/install/AnycubicSlicerNextInstaller.sh && \
-  #bash /tmp/anycubic.sh && \
-  bash -x /tmp/anycubic.sh || (echo "Anycubic installer failed" && cat /tmp/anycubic.sh && exit 1) && \
-  rm /tmp/anycubic.sh && \
+  echo "**** Install Anycubic Slicer latest ****" && \
+  # Add Anycubic repository directly
+  echo "deb [trusted=yes] https://cdn-universe-slicer.anycubic.com/prod $(lsb_release -sc) main" \
+      > /etc/apt/sources.list.d/anycubic.list && \
+  # Update apt and install package
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y anycubicslicernext && \
+  echo "Anycubic Slicer installed successfully" && \
   printf "Linuxserver.io version: ${VERSION-unknown}\nBuild-date: ${BUILD_DATE-unknown}" > /build_version && \
   echo "**** cleanup ****" && \
   apt-get autoclean && \
