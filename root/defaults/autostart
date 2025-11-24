@@ -1,1 +1,3 @@
-/opt/orcaslicer/AppRun
+exec -c "/usr/bin/AnycubicSlicerNext"
+#exec su -m "$USERNAME" -c "/usr/bin/AnycubicSlicerNext"
+#/opt/orcaslicer/AppRun
